@@ -118,6 +118,16 @@ export function Create() {
 
       const explorerLink = `https://sepolia.basescan.org/tx/${receipt.transactionHash}`
       setSuccess({ explorerLink })
+      // Save coin info to localStorage
+      if (typeof window !== 'undefined') {
+        const coins = JSON.parse(localStorage.getItem('createdCoins') || '[]')
+        coins.push({
+          id: receipt.transactionHash,
+          name: data.title,
+          explorerLink,
+        })
+        localStorage.setItem('createdCoins', JSON.stringify(coins))
+      }
     } catch (error) {
       console.error('Error creating post:', error)
     } finally {
